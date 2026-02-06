@@ -12,7 +12,12 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v3
-
+            - name: Build Docker Image
+              run: docker build . --file Dockerfile --tag nirbenboaz/final-python:tagname:$(date +%s)-${{github.run_number}}
+            - name: Docker login
+              run: docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} -p ${{ secrets.DOCKER_HUB_PASSWORD }}
+            - name: Docker push
+              run: docker push nirbenboaz/final-python:tagname:$(date +%s)-${{github.run_number}}
             - name: Set up Python
               uses: actions/setup-python@v3
               with:
